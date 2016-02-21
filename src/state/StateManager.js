@@ -52,7 +52,8 @@ exports = Class(function() {
       onEnter: onEnter,
       order: opts.order !== undefined ? opts.order : this._order++,
       tapToContinue: opts.tapToContinue || false,
-      nextState: opts.nextState || ''
+      nextState: opts.nextState || '',
+      clearOnTransition: opts.clearOnTransition || false
     };
   };
 
@@ -88,7 +89,6 @@ exports = Class(function() {
    * @arg {string} stateName
    * @arg {boolean=true} [runSetupFunction]
    */
-  // TODO: Implement clearScene
   this.enter = function(name, runInitializer, clearScene) {
     var warning;
     name = name === undefined ? this._getNextStateName() : name;
@@ -106,25 +106,32 @@ exports = Class(function() {
       return;
     }
 
+    var oldData = this._states[this._state];
     var data = this._states[name] || {};
     runInitializer = runInitializer === undefined ? name !== "" : runInitializer;
-    clearScene = clearScene || false;
+    clearScene = clearScene || (oldData && oldData.clearOnTransition) || false;
 
     this._enteringState = true;
 
-    var args = [ this.gameData ];
-    // Store extra arguments to pass to state function.
-    for (var i = 3; i < arguments.length; i++) {
-      args.push(arguments[i]);
-    }
-
     this._runStateExitFunctions();
+
+    if (clearScene) {
+      scene.internal.game.reset(null, { skipState: true });
+    }
 
     this._state = name;
 
     if (runInitializer) {
       var onEnter = data.onEnter;
-      onEnter && onEnter.apply(null, args);
+      if (onEnter) {
+        var args = [ this.gameData ];
+        // Store extra arguments to pass to state function.
+        for (var i = 3; i < arguments.length; i++) {
+          args.push(arguments[i]);
+        }
+
+        onEnter.apply(null, args);
+      };
     }
 
     data.tapToContinue && this.tapToContinue();

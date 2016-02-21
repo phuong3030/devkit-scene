@@ -31,31 +31,31 @@ exports = {
    */
   totalDt: 0,
 
-  /**
-   * The total number of milliseconds that have elapsed since the start of the app.
-   * @var {number} scene.totalAppDt
-   */
+    /**
+     * The total number of milliseconds that have elapsed since the start of the app.
+     * @var {number} scene.totalAppDt
+     */
   totalAppDt: 0,
 
-  /**
-   * Called every tick with the dt in milliseconds since the last tick.
-   * @callback onTickCallback
-   * @arg {number} [dt] - Used to normalise game speed based on real time
-   */
-  /**
-   * Register a new tick handler
-   * @func scene.onTick
-   * @arg {onTickCallback} callback
-   */
+    /**
+     * Called every tick with the dt in milliseconds since the last tick.
+     * @callback onTickCallback
+     * @arg {number} [dt] - Used to normalise game speed based on real time
+     */
+    /**
+     * Register a new tick handler
+     * @func scene.onTick
+     * @arg {onTickCallback} callback
+     */
   onTick: function(cb) {
     _onTickHandlers.push(cb);
   },
 
-  /**
-   * Calling this function will set {@link scene._score} and update the score view.
-   * @func scene.setScore
-   * @arg {number} newScore
-   */
+    /**
+     * Calling this function will set {@link scene._score} and update the score view.
+     * @func scene.setScore
+     * @arg {number} newScore
+     */
   setScore: function(score) {
     if (_game_running) {
       _score = score;
@@ -66,32 +66,32 @@ exports = {
     }
   },
 
-  /**
-   * @func scene.addScore
-   * @arg {number} amount
-   * @see scene.setScore
-   */
+    /**
+     * @func scene.addScore
+     * @arg {number} amount
+     * @see scene.setScore
+     */
   addScore: function(add) {
     this.setScore(this.getScore() + add);
   },
 
-  /**
-   * @func scene.getScore
-   * @returns {number}
-   */
+    /**
+     * @func scene.getScore
+     * @returns {number}
+     */
   getScore: function() {
     _using_score = true;
     return _score;
   },
 
-  /**
-   * When called, this function will restart the game.
-   * If scene has been set to use Weeby, calling this will return the user to the Weeby UI.
-   * @func scene.gameOver
-   * @arg {Object}  [opts]
-   * @arg {number}  [opts.delay] - A delay between when this function is called and when the endgame logic is run.
-   * @arg {boolean} [opts.noGameoverScreen] - Optionally skip the "Game Over" text.
-   */
+    /**
+     * When called, this function will restart the game.
+     * If scene has been set to use Weeby, calling this will return the user to the Weeby UI.
+     * @func scene.gameOver
+     * @arg {Object}  [opts]
+     * @arg {number}  [opts.delay] - A delay between when this function is called and when the endgame logic is run.
+     * @arg {boolean} [opts.noGameoverScreen] - Optionally skip the "Game Over" text.
+     */
   gameOver: function(opts) {
 
     if (_game_running === false ) { return; }
@@ -125,14 +125,14 @@ exports = {
     }.bind(this), opts.delay);
   },
 
-  /**
-   * Sets the scene player, makes sure not to override an existing player.
-   * @method  scene.addPlayer
-   * @param   {String|Object} resource - resource key to be resolved by community art, or opts
-   * @param   {Object}        [opts]   - contains options to be applied to the underlying {@link Actor}
-   * @returns {View}                   - The newly set player
-   * @see scene.addActor
-   */
+    /**
+     * Sets the scene player, makes sure not to override an existing player.
+     * @method  scene.addPlayer
+     * @param   {String|Object} resource - resource key to be resolved by community art, or opts
+     * @param   {Object}        [opts]   - contains options to be applied to the underlying {@link Actor}
+     * @returns {View}                   - The newly set player
+     * @see scene.addActor
+     */
   addPlayer: function(resource, opts) {
     if (this.player) {
       throw new Error('You can only add one player!');
@@ -145,45 +145,45 @@ exports = {
     return this.player;
   },
 
-  // --- ---- Shortcuts ---- ---- //
+    // --- ---- Shortcuts ---- ---- //
 
-  /**
-   * Easy access to shape classes
-   * @var  {Object} scene.shape
-   * @prop {Rect}   scene.shape.Rect
-   * @prop {Line}   scene.shape.Line
-   */
+    /**
+     * Easy access to shape classes
+     * @var  {Object} scene.shape
+     * @prop {Rect}   scene.shape.Rect
+     * @prop {Line}   scene.shape.Line
+     */
   shape: {
     Rect: Rect,
     Line: Line
   },
 
-  /**
-   * Reset and restart the entire game.
-   * @method scene.reset
-   */
+    /**
+     * Reset and restart the entire game.
+     * @method scene.reset
+     */
   reset: function() {
     GC.app.reset();
   },
 
   __listeners__: [
-    {
-      event: 'restartUI',
-      cb: function() {
-        effects.commit();
-      }
-    },
-    {
-      event: 'restartGame',
-      cb: function() {
-        _onTickHandlers = [];
+  {
+    event: 'restartUI',
+    cb: function() {
+      effects.commit();
+    }
+  },
+  {
+    event: 'restartGame',
+    cb: function() {
+      _onTickHandlers = [];
 
-        this.player = null;
-        this.totalDt = 0;
+      this.player = null;
+      this.totalDt = 0;
 
-        _score = 0;
-      }
-    },
+      _score = 0;
+    }
+  },
     {
       event: 'restartState',
       cb: function(mode) {
