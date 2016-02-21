@@ -28,9 +28,9 @@ var TrackerInstance = Class(function() {
   this.getAverage = function() {
     var sum = 0;
     var len = this.times.length
-    for (var i = 0; i < len; i++) {
-      sum += this.times[i];
-    }
+      for (var i = 0; i < len; i++) {
+        sum += this.times[i];
+      }
     return sum / len;
   };
 
@@ -39,8 +39,7 @@ var TrackerInstance = Class(function() {
 var PerformanceTracker = Class(function() {
 
   this.DO_TRACKING = SCENE_CONFIG.performance;
-  window.performance = window.performance || {};
-  this.now = window.performance.now ? window.performance.now.bind(window.performance) : Date.now;
+  this.now = window.performance && window.performance.now ? window.performance.now.bind(window.performance) : Date.now;
 
   this.init = function() {
     this.tracking = {};

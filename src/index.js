@@ -22,7 +22,7 @@ var scene = window.scene = function (newGameFunc) {
 scene._appClass = Class(GC.Application, function(supr) {
   this.init = function() {
     supr(this, 'init', arguments);
-    scene.app = this;
+    scene.app = this.rootView;
 
     var internalGame = scene.internal.game;
 
@@ -67,6 +67,7 @@ var SCENE_MODULES = [
 scene.log = new Logger('scene', SCENE_CONFIG.logging.scene);
 scene.log.log('Logging now ready');
 scene.performance = performance;
+scene.weeby = weeby;
 
 // // Module Registration // //
 
